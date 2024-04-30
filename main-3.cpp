@@ -1,5 +1,8 @@
 /*
 Skeleton code for storage management
+Group #3
+Caitlyn Lewis    # 932829852 cookcai@oregonstate.edu
+Suyash Sreekumar # XXXXXXXXX XXXXXXX@oregonstate.edu
 */
 
 #include <string>
@@ -25,6 +28,15 @@ int main(int argc, char* argv[]) {
 
     // Searching for Employee IDs Using [manager.findAndPrintEmployee(id)]
     /***TO_DO***/ 
+    int targetID = -1;
+    while(true){
+        cout << "Enter an employee ID to find, or 0 to quit: ";
+        cin >> targetID;
+        if(targetID == 0){
+            break;
+        }
+        manager.findAndPrintEmployee(targetID);
+    }
 
     return 0;
 }

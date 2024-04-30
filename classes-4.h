@@ -6,6 +6,12 @@
 #include <sstream>
 using namespace std;  // Include the standard namespace
 
+/*
+Group #3
+Caitlyn Lewis    # 932829852 cookcai@oregonstate.edu
+Suyash Sreekumar # XXXXXXXXX XXXXXXX@oregonstate.edu
+*/
+
 class Employee {
 public:
     int id, manager_id;  // Employee ID and their manager's ID
@@ -30,7 +36,8 @@ public:
         out.write(reinterpret_cast<const char*>(&id), sizeof(id));  // Write the integer ID
         out.write(name, sizeof(name));  // Write the fixed length name
         /***TO_DO***/ // do the same thing for bio and manager-id
-
+        out.write(bio, sizeof(bio));
+        out.write(reinterpret_cast<const char*>(&manager_id), sizeof(manager_id));
     }
 
     // Read data from a binary input stream, i.e., EmployeeRelation.dat file to populate an Employee object
@@ -38,7 +45,8 @@ public:
         in.read(reinterpret_cast<char*>(&id), sizeof(id));  // Read the integer ID
         in.read(name, sizeof(name));  // Read the fixed length name
         /***TO_DO***/ // do the same thing for bio and manager-id
-
+        in.read(reinterpret_cast<char*>(&manager_id), sizeof(manager_id));
+        in.read(bio, sizeof(bio));
     }
 
     // Print the Employee object to standard output
@@ -81,6 +89,15 @@ public:
             
             /***TO_DO***/ 
             // Parse id, name, bio and manager-id from line, to create the Employee object below 
+            string i = line.substr(0, line.find(','));
+            id = stoi(i);
+            line = line.substr(line.find(',') + 1);
+            string name = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1);
+            string bio = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1);
+            string m = line.substr(0, line.find(','));
+            manager_id = stoi(m);
 
             Employee emp(id, name, bio, manager_id);  //create Employee objects
 
@@ -92,6 +109,7 @@ public:
     // Searches for an Employee by ID in the binary data_file and prints if found
     void findAndPrintEmployee(int searchId) {
         
+        data_file.clear();
         data_file.seekg(0, ios::beg);  // Rewind the data_file to the beginning for reading
 
         Employee emp;
@@ -99,7 +117,18 @@ public:
         /*** TO_DO ***/
         // Use [emp.read_from_data_file(data_file)] to read lines from the datafile 
         // until you find the id you are looking for or reach the end-of-file (eof) 
+        while (true){
+            emp.read_from_data_file(data_file);
+            if(emp.id == searchId){
+                emp.print();
+                return;
+            }
+            if (!data_file.good()){
+                break;
+            }
+        }
 
+        cout << "Employee " << searchId << " not found." << endl;
        
         // Print not found message if no match
     }
